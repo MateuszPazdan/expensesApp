@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import AllExpenses from './screens/AllExpenses';
 import RecentExpenses from './screens/RecentExpenses';
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,6 +8,7 @@ import ManageExpense from './screens/ManageExpense';
 import { GlobalStyles } from './constants/styles';
 import { Ionicons } from '@expo/vector-icons';
 import IconButton from './components/ui/IconButton';
+import ExpensesContextProvider from './context/expensesContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -31,7 +31,6 @@ function ExpensesOverview() {
 						color={tintColor}
 						icon='add'
 						onPress={() => {
-							console.log('pawel');
 							navigation.navigate('ManageExpense');
 						}}
 					/>
@@ -66,25 +65,30 @@ function ExpensesOverview() {
 export default function App() {
 	return (
 		<>
-			<NavigationContainer>
-				<Stack.Navigator>
-					<Stack.Screen
-						name='ExpesesOverview'
-						component={ExpensesOverview}
-						options={{
-							headerShown: false,
+			<ExpensesContextProvider>
+				<NavigationContainer>
+					<Stack.Navigator
+						screenOptions={{
+							headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+							headerTintColor: 'white',
 						}}
-					/>
-					<Stack.Screen name='ManageExpense' component={ManageExpense} />
-				</Stack.Navigator>
-			</NavigationContainer>
+					>
+						<Stack.Screen
+							name='ExpesesOverview'
+							component={ExpensesOverview}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name='ManageExpense'
+							component={ManageExpense}
+							options={{ presentation: 'modal' }}
+						/>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</ExpensesContextProvider>
 			<StatusBar style='light' />
 		</>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		backgroundColor: 'orange',
-	},
-});

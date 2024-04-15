@@ -1,61 +1,14 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import ExpensesSummary from './ExpensesSummary';
 import ExpensesList from './ExpensesList';
 import { GlobalStyles } from '../../constants/styles';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const DUMMY_EXPENSES = [
-	{
-		id: 'e1',
-		description: 'A pair of shoes',
-		amount: 59.99,
-		date: new Date('2024-04-10'),
-	},
-	{
-		id: 'e2',
-		description: 'A pair of trousers',
-		amount: 52.15,
-		date: new Date('2024-03-10'),
-	},
-	{
-		id: 'e3',
-		description: 'A T-shirt',
-		amount: 12.9,
-		date: new Date('2024-03-25'),
-	},
-	{
-		id: 'e4',
-		description: 'A Book',
-		amount: 5.2,
-		date: new Date('2024-03-30'),
-	},
-	{
-		id: 'e5',
-		description: 'A pair of shoes',
-		amount: 59.99,
-		date: new Date('2024-04-10'),
-	},
-	{
-		id: 'e6',
-		description: 'A pair of trousers',
-		amount: 52.15,
-		date: new Date('2024-03-10'),
-	},
-	{
-		id: 'e7',
-		description: 'A T-shirt',
-		amount: 12.9,
-		date: new Date('2024-03-25'),
-	},
-	{
-		id: 'e8',
-		description: 'A Book',
-		amount: 5.2,
-		date: new Date('2024-03-30'),
-	},
-];
-
-function ExpensesOutput({ expenses, expensesPeriod }) {
+function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
+	let content = <Text style={styles.info}>{fallbackText}</Text>;
+	if (expenses.length > 0) {
+		content = <ExpensesList expenses={expenses} />;
+	}
 	return (
 		<View style={styles.root}>
 			<LinearGradient
@@ -63,11 +16,8 @@ function ExpensesOutput({ expenses, expensesPeriod }) {
 				style={styles.background}
 			/>
 			<View style={styles.container}>
-				<ExpensesSummary
-					expenses={DUMMY_EXPENSES}
-					periodName={expensesPeriod}
-				/>
-				<ExpensesList expenses={DUMMY_EXPENSES} />
+				<ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
+				{content}
 			</View>
 		</View>
 	);
@@ -93,4 +43,6 @@ const styles = StyleSheet.create({
 		zIndex: -5,
 		transform: [{ rotate: '0.7rad' }, { scaleX: 2 }, { scaleY: 1.2 }],
 	},
+
+	info: { color: 'black', fontSize: 16, textAlign: 'center', marginTop: 32 },
 });
