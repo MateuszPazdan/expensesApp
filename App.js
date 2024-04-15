@@ -16,7 +16,7 @@ const Stack = createNativeStackNavigator();
 function ExpensesOverview() {
 	return (
 		<Tab.Navigator
-			screenOptions={{
+			screenOptions={({ navigation }) => ({
 				headerStyle: {
 					backgroundColor: GlobalStyles.colors.primary500,
 				},
@@ -32,10 +32,11 @@ function ExpensesOverview() {
 						icon='add'
 						onPress={() => {
 							console.log('pawel');
+							navigation.navigate('ManageExpense');
 						}}
 					/>
 				),
-			}}
+			})}
 		>
 			<Tab.Screen
 				name='RecentExpenses'
